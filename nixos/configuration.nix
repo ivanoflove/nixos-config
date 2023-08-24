@@ -11,6 +11,7 @@
       ./nvidia.nix
       ./fonts.nix
       ./fcitx.nix
+      # ./hypr.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -59,13 +60,26 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
+  services.power-profiles-daemon.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
+  # Enable KDE
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    elisa
+    gwenview
+    okular
+    oxygen
+    khelpcenter
+    konsole
+    plasma-browser-integration
+    print-manager
+  ];
+ # 
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";
@@ -74,6 +88,16 @@
   # services.printing.enable = true;
 
   # Enable sound.
+  sound.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+  
   # sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
@@ -98,7 +122,49 @@
 
   environment.shells = with pkgs; [ zsh ];
   
+  environment.systemPackages = with pkgs;[
+
+    xorg.xrandr
   
+    # hyprland
+    # (waybar.overrideAttrs (oldAttrs: {
+        # mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+      # })
+    # )
+    # mako
+    # libnotify
+    # swww
+    # kitty
+    # rofi-wayland
+    
+    power-profiles-daemon
+
+    # python
+    (python311.withPackages(ps: with ps; [ pandas numpy ]))
+    gcc
+  ];
+
+  # environment.systemPackages = [
+    # (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
+     # pkgs.buildFHSUserEnv (base // {
+       # name = "fhs";
+       # targetPkgs = pkgs: (base.targetPkgs pkgs) ++ (with pkgs;[
+        # pkg-config
+        # lsb-release
+        # gcc10
+        # motif
+        # libzip
+        # tcl
+        # tk
+        # tcsh
+        # 
+# 
+       # ]);
+       # profile = "export FHS=1";
+       # runScript = "zsh";
+       # extraOutputsToInstall = ["dev"];
+     # }))
+  # ];
   # do garbage collection weekly to keep disk usage low
   system.stateVersion = "23.05"; # Did you read the comment?
   nix.gc = {
@@ -107,6 +173,7 @@
     options = "--delete-older-than 7d";
   };
 
+ 
   # Optimise storage
   # you can alse optimise the store manually via:
   #    nix-store --optimise
