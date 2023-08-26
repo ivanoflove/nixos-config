@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
@@ -10,21 +10,11 @@
   programs.xwayland.enable = true;
   # services.xserver.displayManager.gdm.wayland = true;
 
-  # 同步
-  specialisation = {
-    external-display.configuration = {
-      system.nixos.tags = [ "external-display" ];
-      hardware.nvidia = {
-        prime.offload.enable = lib.mkForce false;
-        powerManagement.enable = lib.mkForce false;
-      };
-    };
-  };
-  
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
     nvidiaSettings = true;
+    powerManagement.enable = lib.mkForce false;
     # when use offload
     # powerManagement = {
         # enable = pkgs.lib.mkForce false;
@@ -35,14 +25,7 @@
 
     prime = {
 
-      # 同步
-  	  # offload.enable = pkgs.lib.mkForce false;
-  	  # sync.enable = pkgs.lib.mkForce true;
-  	  
-      # offload = {
-      # enable = true;
-      # enableOffloadCmd = true;
-      # };
+      offload.enable = lib.mkForce false;
       sync.enable = true;
 
       nvidiaBusId = "PCI:1:0:0";

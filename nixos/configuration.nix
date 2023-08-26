@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidia.nix
+      ./nvidiaonly.nix
       ./fonts.nix
       ./fcitx.nix
       # ./hypr.nix
@@ -33,6 +33,12 @@
   # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
   # Easiest to use and most distros use this by default.
+  services.blueman.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  hardware = {
+  #    pulseaudio.enable = true;
+    bluetooth.enable = true;
+  };
   
   services.v2raya.enable = true;
   services.supergfxd.enable = false;
@@ -62,6 +68,8 @@
   services.xserver.enable = true;
   services.power-profiles-daemon.enable = true;
 
+ 
+  
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
@@ -103,6 +111,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.cudaSupport = true;
@@ -115,7 +124,7 @@
   users.users.lz = {
     isNormalUser = true;
     description = "lz";
-    extraGroups = [ "wheel" "networkmanager" "video" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "video" "kvm" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
@@ -123,22 +132,9 @@
   environment.shells = with pkgs; [ zsh ];
   
   environment.systemPackages = with pkgs;[
-
-    xorg.xrandr
-  
-    # hyprland
-    # (waybar.overrideAttrs (oldAttrs: {
-        # mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      # })
-    # )
-    # mako
-    # libnotify
-    # swww
-    # kitty
-    # rofi-wayland
-    
     power-profiles-daemon
-
+    blueman
+    gnome.gnome-keyring
     # python
     (python311.withPackages(ps: with ps; [ pandas numpy ]))
     gcc

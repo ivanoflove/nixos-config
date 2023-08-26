@@ -8,36 +8,39 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
-in{
+in {
+  environment.systemPackages = [ nvidia-offload ];
+  
   services.xserver.videoDrivers = [ "nvidia" ];
+  
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   services.switcherooControl.enable = true;
 
   programs.xwayland.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  # services.xserver.displayManager.gdm.wayland = true;
 
   
   # 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
     nvidiaSettings = true;
+    open = false;
     # when use offload
-    powerManagement = {
-        enable = true;
-        finegrained = true;
-      };
+    # powerManagement = {
+        # enable = true;
+        # finegrained = true;
+      # };
 
     prime = {
     	
         offload = {
         enable = true;
-        enableOffloadCmd = true;
+        # enableOffloadCmd = true;
         };
         # sync.enable = true;
-        # reverseSync.enable = true;
 
         nvidiaBusId = "PCI:1:0:0";
         amdgpuBusId = "PCI:6:0:0";

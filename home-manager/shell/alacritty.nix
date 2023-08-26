@@ -6,7 +6,7 @@
     settings = {
       env.TERM = "xterm-256color";
       font = {
-        size = 10;
+        size = 12;
         draw_bold_text_with_bright_colors = true;
       };
       scrolling.multiplier = 5;

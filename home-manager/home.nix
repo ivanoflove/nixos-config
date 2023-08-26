@@ -23,7 +23,7 @@
       })
   	v2ray
   	v2raya
-  	google-chrome-dev
+  	google-chrome
   	git
   	vscode
   	yesplaymusic
