@@ -40,6 +40,11 @@
     bluetooth.enable = true;
   };
   
+  programs.clash-verge = {
+    enable = true;
+    autoStart = true;
+    tunMode = true;
+  };
   services.v2raya.enable = true;
   services.supergfxd.enable = false;
   services = {
@@ -71,22 +76,22 @@
  
   
   # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   # Enable KDE
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    elisa
-    gwenview
-    okular
-    oxygen
-    khelpcenter
-    konsole
-    plasma-browser-integration
-    print-manager
-  ];
+  #  services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+  # environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    # elisa
+    # gwenview
+    # okular
+    # oxygen
+    # khelpcenter
+    # konsole
+    # plasma-browser-integration
+    # print-manager
+  # ];
  # 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -107,7 +112,7 @@
   };
   
   # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

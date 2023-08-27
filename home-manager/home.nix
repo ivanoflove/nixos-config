@@ -21,22 +21,20 @@
         };
         extraPkgs = pkgs: with pkgs; [ ];
       })
-  	v2ray
-  	v2raya
-  	google-chrome
+  	google-chrome-dev
   	git
-  	vscode
   	yesplaymusic
   	aria
   	appimage-run
   	mpv
-
+  	v2ray
+  	v2raya
   ];
 
   # 设置鼠标指针大小以及字体 DPI（适用于 4K 显示器）
   xresources.properties = {
     "Xcursor.size" = 16;
-    "Xft.dpi" = 110;
+    "Xft.dpi" = 106;
   };
   
  
