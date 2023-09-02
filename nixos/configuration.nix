@@ -8,10 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidiaonly.nix
+      ./nvidiaamd.nix
       ./fonts.nix
       ./fcitx.nix
-      # ./hypr.nix
+      ./libvirt.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -28,10 +28,8 @@
   boot.supportedFilesystems = [ "ntfs" ];
   
   networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true; 
-  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
+  
   # Easiest to use and most distros use this by default.
   services.blueman.enable = true;
   services.gnome.gnome-keyring.enable = true;
@@ -40,12 +38,14 @@
     bluetooth.enable = true;
   };
   
-  programs.clash-verge = {
-    enable = true;
-    autoStart = true;
-    tunMode = true;
-  };
+  # programs.clash-verge = {
+    # enable = true;
+    # autoStart = true;
+    # tunMode = true;
+  # };
+  # 
   services.v2raya.enable = true;
+  
   services.supergfxd.enable = false;
   services = {
     asusd = {
@@ -76,22 +76,23 @@
  
   
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
   # Enable KDE
-  #  services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-  # environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    # elisa
-    # gwenview
-    # okular
-    # oxygen
-    # khelpcenter
+ 
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    elisa
+    gwenview
+    okular
+    oxygen
+    khelpcenter
     # konsole
-    # plasma-browser-integration
-    # print-manager
-  # ];
+    plasma-browser-integration
+    print-manager
+  ];
  # 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -110,7 +111,7 @@
     pulse.enable = true;
     jack.enable = true;
   };
-  
+  # 
   # sound.enable = true;
   hardware.pulseaudio.enable = false;
 
@@ -123,7 +124,7 @@
   security.sudo.wheelNeedsPassword = false;
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+  nix.settings.trusted-users = [ "lz" ];
   programs.zsh.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lz = {
@@ -140,34 +141,17 @@
     power-profiles-daemon
     blueman
     gnome.gnome-keyring
+
     # python
-    (python311.withPackages(ps: with ps; [ pandas numpy ]))
-    gcc
+    # (python311.withPackages(ps: with ps; [ pandas numpy ]))
+    # gcc
   ];
 
-  # environment.systemPackages = [
-    # (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
-     # pkgs.buildFHSUserEnv (base // {
-       # name = "fhs";
-       # targetPkgs = pkgs: (base.targetPkgs pkgs) ++ (with pkgs;[
-        # pkg-config
-        # lsb-release
-        # gcc10
-        # motif
-        # libzip
-        # tcl
-        # tk
-        # tcsh
-        # 
-# 
-       # ]);
-       # profile = "export FHS=1";
-       # runScript = "zsh";
-       # extraOutputsToInstall = ["dev"];
-     # }))
+
   # ];
   # do garbage collection weekly to keep disk usage low
   system.stateVersion = "23.05"; # Did you read the comment?
+  
   nix.gc = {
     automatic = true;
     dates = "weekly";
