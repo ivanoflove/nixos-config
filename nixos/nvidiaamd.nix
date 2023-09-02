@@ -15,16 +15,30 @@ let
     exec "$@"
   '';
 
+
+
 in{
 
+
+
+  boot.kernelModules = [
+    "nvidia"
+    "nvidia_drm"
+  ];
+
+ 
+
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+  ];
   # NVIDIA drivers are unfree.
   nixpkgs.config.allowUnfree = pkgs.lib.mkForce true;
-
+  
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
-  
+
  
   # environment.sessionVariables = {
     # # If your cursor becomes invisible
