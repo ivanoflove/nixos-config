@@ -8,10 +8,12 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidiaamd.nix
+      ./nvidiasy.nix
       ./fonts.nix
       ./fcitx.nix
       ./libvirt.nix
+
+      # ./hyprland.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -20,7 +22,7 @@
   boot.loader.efi.efiSysMountPoint = "/efi"; 
 
   # do not need to keep too much generations
-  boot.loader.systemd-boot.configurationLimit = 10;
+  boot.loader.systemd-boot.configurationLimit = 5;
   
   # gpu set
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -44,6 +46,53 @@
     # tunMode = true;
   # };
   # 
+  # environment.sessionVariables = rec {
+    # # fix nvidia
+    # LIBVA_DRIVER_NAME = "nvidia";
+    # XDG_SESSION_TYPE = "wayland";
+    # # GBM_BACKEND = "nvidia-drm";
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # WLR_NO_HARDWARE_CURSORS = "1";
+    # QT_QPA_PLATFORM= "wayland;xcb";
+    # # __EGL_VENDOR_LIBRARY_FILENAMES = "/usr/share/glvnd/egl_vendor.d/50_mesa.json";
+  # };
+  # samba
+  # networking.firewall.enable = true;
+  # networking.firewall.allowPing = true;
+  # services.samba.openFirewall = true;
+  # 
+  # services.samba = {
+    # enable = true;
+    # securityType = "user";
+    # extraConfig = ''
+      # workgroup = WORKGROUP
+      # server string = smbnix
+      # netbios name = smbnix
+      # security = user
+      # #use sendfile = yes
+      # #max protocol = smb2
+      # # note: localhost is the ipv6 localhost ::1
+      # hosts allow = 192.168.0. 127.0.0.1 localhost
+      # hosts deny = 0.0.0.0/0
+      # guest account = nobody
+      # map to guest = bad user
+    # '';
+    # shares = {
+      # Media = {
+        # path = "/media";
+        # browseable = "yes";
+        # "read only" = "no";
+        # "guest ok" = "no";
+        # "create mask" = "0777";
+        # "directory mask" = "0777";
+        # "force user" = "lz";
+    # 
+     # 
+    # };
+      # 
+    # };
+  # };
+  
   services.v2raya.enable = true;
   
   services.supergfxd.enable = false;
@@ -141,7 +190,7 @@
     power-profiles-daemon
     blueman
     gnome.gnome-keyring
-
+    cifs-utils
     # python
     # (python311.withPackages(ps: with ps; [ pandas numpy ]))
     # gcc

@@ -5,7 +5,6 @@
   imports = [
     ./shell/zsh.nix
     ./shell/micro.nix
-    ./shell/alacritty.nix
   ];
   
   home.username = "lz";
@@ -30,6 +29,18 @@
   	v2ray
   	v2raya
   	polkit
+
+
+  	# hyprland
+  	# waybar
+  	# (pkgs.waybar.overrideAttrs (oldAttrs: {
+  	    # mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+  	  # })
+  	# )
+  	# mako
+  	# swww
+  	# kitty
+  	# rofi-wayland
   ];
 
   # 设置鼠标指针大小以及字体 DPI（适用于 4K 显示器）
@@ -37,8 +48,8 @@
     "Xcursor.size" = 16;
     "Xft.dpi" = 100;
   };
+  # 
   
- 
   # git 相关配置
   programs.git = {
     enable = true;
