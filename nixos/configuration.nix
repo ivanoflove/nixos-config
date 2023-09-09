@@ -17,10 +17,29 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/efi"; 
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.efi.efiSysMountPoint = "/efi"; 
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/efi"; # 默认是 /boot，重点就是改这里
 
+    grub = {
+      enable = true;
+      device = "nodev";
+      default = "1"; # 选择第二个引导项，从0开始计数
+      efiSupport = true;
+
+      # 不用 osprober，自己手动添加启动项（通用配置，与实际分区无关）
+      extraEntries = ''
+        menuentry "Windows" {
+         search --file --no-floppy --set=root /EFI/Microsoft/Boot/bootmgfw.efi
+         chainloader (''${root})/EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
+    };
+  };
+  
   # do not need to keep too much generations
   boot.loader.systemd-boot.configurationLimit = 5;
   
