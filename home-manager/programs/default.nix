@@ -1,5 +1,6 @@
 {
   imports = [
-    ./clash-verge
+    ./micro
+    # ./hyprland
   ];
 }
