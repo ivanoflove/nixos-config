@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
 
@@ -37,31 +37,33 @@
   	v2ray
   	v2raya
   	polkit
+  	telegram-desktop
+  	steam-run
 
 
   	# hyprland
-  	(pkgs.waybar.overrideAttrs (oldAttrs: {
-  	    mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-  	  })
-  	)
-  	mako
-  	swww
-  	kitty
-  	rofi-wayland
+  	# (pkgs.waybar.overrideAttrs (oldAttrs: {
+  	#     mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+  	#   })
+  	# )
+  	# mako
+  	# swww
+  	# kitty
+  	# rofi-wayland
   	
   ]) ++ (with pkgs.gnome; [ 
-    nautilus
-    zenity
-    gnome-tweaks
-    eog
+    # nautilus
+    # zenity
+    # gnome-tweaks
+    # eog
     gedit
   ]);
 
   # 设置鼠标指针大小以及字体 DPI（适用于 4K 显示器）
-  # xresources.properties = {
-    # "Xcursor.size" = 16;
-    # "Xft.dpi" = 100;
-  # };
+  xresources.properties = {
+    "Xcursor.size" = 16;
+    "Xft.dpi" = 100;
+  };
   # 
   
   # git 相关配置

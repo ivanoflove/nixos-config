@@ -38,7 +38,11 @@ in{
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
-
+  hardware.opengl.extraPackages = with pkgs; [
+    vaapiVdpau
+    libvdpau-va-gl
+    libva
+  ];
  
   # environment.sessionVariables = {
     # # If your cursor becomes invisible
